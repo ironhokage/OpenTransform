@@ -11,132 +11,165 @@
 
 namespace open3D {
     class Transform {
-    public:
 
         enum SpaceType {
             WorldSpace,
             LocalSpace
         };
 
+    public:
+
         inline void SetParent();
         void GetParent() const; // to add [[nodiscard]]
 
-        // Set World Coordinates(Position, Rotation & Scale)
-        inline void SetWorldPosition(const glm::vec3& position);
-        inline void SetWorldRotation(const glm::quat& rotation);
-        inline void SetWorldScale(const glm::vec3& scale);
+        // Set Coordinates(Position, Rotation & Scale)
+        inline void SetPosition(const glm::vec3& position, SpaceType space);
+        inline void SetRotation(const glm::quat& rotation, SpaceType space);
+        inline void SetScale(const glm::vec3& scale, SpaceType space);
 
-        // Set Local Coordinates(Position, Rotation & Scale)
-        inline void SetLocalPosition(const glm::vec3& position);
-        inline void SetLocalRotation(const glm::quat& rotation);
-        inline void SetLocalScale(const glm::vec3& scale);
+        // Get Coordinates(Position, Rotation, Scale & Euler Angles)
+        [[nodiscard]] inline glm::vec3 GetPosition(SpaceType space) const;
+        [[nodiscard]] inline glm::quat GetRotation(SpaceType space) const;
+        [[nodiscard]] inline glm::vec3 GetScale(SpaceType space) const;
+        [[nodiscard]] inline glm::vec3 GetEulerAngles(SpaceType space) const;
 
-        // Get Local Coordinates(Position, Rotation, Scale & Euler Angles)
-        [[nodiscard]] inline glm::vec3 GetLocalPosition() const;
-        [[nodiscard]] inline glm::quat GetLocalRotation() const;
-        [[nodiscard]] inline glm::vec3 GetLocalScale() const;
-        [[nodiscard]] inline glm::vec3 GetLocalEulerAngles() const;
-
-        // Get World Coordinates(Position, Rotation, Scale & Euler Angles)
-        inline glm::vec3 GetWorldPosition();
-        inline glm::quat GetWorldRotation();
-        inline glm::vec3 GetWorldScale();
-        inline glm::vec3 GetWorldEulerAngles();
+        // In here you add the values you want to change to position and rotation
+        inline void UpdatePositionAndRotation(glm::vec3& currentPosition, glm::quat& currentRotation, SpaceType space);
 
         // Methods to obtain the Forward, Right & Up world axes
-        [[nodiscard]] inline glm::vec3 Forward();
-        [[nodiscard]] inline glm::vec3 Right();
-        [[nodiscard]] inline glm::vec3 Up();
+        [[nodiscard]] static inline glm::vec3 Forward(SpaceType space);
+        [[nodiscard]] inline glm::vec3 Right(SpaceType space);
+        [[nodiscard]] inline glm::vec3 Up(SpaceType space);
 
-        inline void SetWorldPositionAndRotation(glm::vec3& position, glm::quat& rotation);
-        inline void SetLocalPositionAndRotation(const glm::vec3& localPosition, const glm::quat& localRotation);
+        inline void SetPositionAndRotation(glm::vec3& position, glm::quat& rotation, SpaceType space);
 
         inline void RotateQuaternion(const glm::quat& angle);
         inline void RotateEuler(const glm::vec3 &axis, float angle);
-        inline void Translate(const glm::vec3& translation);
+        inline void Translate(const glm::vec3& translation, SpaceType space);
         inline void LookAt(const glm::vec3& position,  const glm::vec3& axis);
 
         inline int GetTransformSiblingIndex();
 
         inline static void Destroy();
+        inline static void CreateNewTransform();
 
     private:
-        glm::vec3 localPosition;
-        glm::quat localRotation;
-        glm::vec3 localScale;
 
-        // Used in the getter functions when decomposing the global matrix
+        struct TransformData {
+
+            glm::vec3 localPosition;
+            glm::quat localRotation;
+            glm::vec3 localScale;
+
+            bool isStatic;
+            int parentIndex = -1;
+
+            glm::mat3x4 localMatrix;
+            glm::mat3x4 worldMatrix;
+
+            bool localMatrixDirty = true;
+            bool globalMatrixDirty = true;
+
+        };
+
+        std::vector<TransformData> transform_data;
+
         glm::vec3 position;
         glm::quat rotation;
         glm::vec3 scale;
         glm::vec3 skew;
         glm::vec4 perspective;
 
-        bool localMatrixDirty = true;
-        bool globalMatrixDirty = true;
     };
-
-
-    // Implementation of the functions
 
     inline void Transform::SetParent() {
     }
 
-    inline void Transform::SetWorldPosition(const glm::vec3 &position) {
+    inline void Transform::SetPosition(const glm::vec3 &position, SpaceType space) {
+
     }
 
-    inline void Transform::SetWorldRotation(const glm::quat &rotation) {
+    inline void Transform::SetRotation(const glm::quat &rotation, SpaceType space) {
     }
 
-    inline void Transform::SetWorldScale(const glm::vec3 &scale) {
+    inline void Transform::SetScale(const glm::vec3 &scale, SpaceType space) {
     }
 
-    inline void Transform::SetLocalPosition(const glm::vec3 &position) {
+    inline glm::vec3 Transform::GetPosition(SpaceType space) const {
+        switch (space) {
+            case WorldSpace:
+                break;
+            case LocalSpace:
+                break;
+            default: ;
+        }
     }
 
-    inline void Transform::SetLocalRotation(const glm::quat &rotation) {
+    inline glm::quat Transform::GetRotation(SpaceType space) const {
+        switch (space) {
+            case WorldSpace:
+                break;
+            case LocalSpace:
+                break;
+            default: ;
+        }
     }
 
-    inline void Transform::SetLocalScale(const glm::vec3 &scale) {
+    inline glm::vec3 Transform::GetScale(SpaceType space) const {
+        switch (space) {
+            case WorldSpace:
+                break;
+            case LocalSpace:
+                break;
+            default: ;
+        }
     }
 
-    inline glm::vec3 Transform::GetLocalPosition() const {
+    inline glm::vec3 Transform::GetEulerAngles(SpaceType space) const {
+        switch (space) {
+            case WorldSpace:
+                break;
+            case LocalSpace:
+                break;
+            default: ;
+        }
     }
 
-    inline glm::quat Transform::GetLocalRotation() const {
+    inline void Transform::UpdatePositionAndRotation(glm::vec3 &currentPosition, glm::quat &currentRotation,
+        SpaceType space) {
     }
 
-    inline glm::vec3 Transform::GetLocalScale() const {
+    inline glm::vec3 Transform::Forward(SpaceType space) {
+        switch (space) {
+            case WorldSpace:
+                break;
+            case LocalSpace:
+                break;
+            default: ;
+        }
     }
 
-    inline glm::vec3 Transform::GetLocalEulerAngles() const {
+    inline glm::vec3 Transform::Right(SpaceType space) {
+        switch (space) {
+            case WorldSpace:
+                break;
+            case LocalSpace:
+                break;
+            default: ;
+        }
     }
 
-    inline glm::vec3 Transform::GetWorldPosition() {
+    inline glm::vec3 Transform::Up(SpaceType space) {
+        switch (space) {
+            case WorldSpace:
+                break;
+            case LocalSpace:
+                break;
+            default: ;
+        }
     }
 
-    inline glm::quat Transform::GetWorldRotation() {
-    }
-
-    inline glm::vec3 Transform::GetWorldScale() {
-    }
-
-    inline glm::vec3 Transform::GetWorldEulerAngles() {
-    }
-
-    inline glm::vec3 Transform::Forward() {
-    }
-
-    inline glm::vec3 Transform::Right() {
-    }
-
-    inline glm::vec3 Transform::Up() {
-    }
-
-    inline void Transform::SetWorldPositionAndRotation(glm::vec3 &position, glm::quat &rotation) {
-    }
-
-    inline void Transform::SetLocalPositionAndRotation(const glm::vec3 &localPosition, const glm::quat &localRotation) {
+    inline void Transform::SetPositionAndRotation(glm::vec3 &position, glm::quat &rotation, SpaceType space) {
     }
 
     inline void Transform::RotateQuaternion(const glm::quat &angle) {
@@ -145,7 +178,7 @@ namespace open3D {
     inline void Transform::RotateEuler(const glm::vec3 &axis, float angle) {
     }
 
-    inline void Transform::Translate(const glm::vec3 &translation) {
+    inline void Transform::Translate(const glm::vec3 &translation, SpaceType space) {
     }
 
     inline void Transform::LookAt(const glm::vec3 &position, const glm::vec3 &axis) {
@@ -155,5 +188,8 @@ namespace open3D {
     }
 
     inline void Transform::Destroy() {
+    }
+
+    inline void Transform::CreateNewTransform() {
     }
 }
