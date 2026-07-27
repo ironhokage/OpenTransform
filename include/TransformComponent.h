@@ -8,9 +8,10 @@
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <baseTransform.h>
 
 namespace open3D {
-    class Transform {
+    class Transform : baseTransform {
 
         enum SpaceType {
             WorldSpace,
@@ -83,6 +84,9 @@ namespace open3D {
     };
 
     inline void Transform::SetParent() {
+    }
+
+    inline void Transform::GetParent() const {
     }
 
     inline void Transform::SetPosition(const glm::vec3 &position, SpaceType space) {

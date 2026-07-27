@@ -1,4 +1,4 @@
-#include "../include/openTransform.h"
+#include "../include/TransformComponent.h"
 #include <iostream>
 
 int main() {

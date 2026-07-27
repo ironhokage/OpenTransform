@@ -9,10 +9,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_library(OpenTransform INTERFACE)
 
 target_include_directories(OpenTransform INTERFACE
-        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/glm
 )
-
 find_package(glm QUIET)
 target_link_libraries(OpenTransform INTERFACE glm)
 
