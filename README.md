@@ -1,8 +1,8 @@
-# OpenTransform
+# OpenDAG
 
-An open source transform system for GLM based C++ game engines.
+An open source DAG Scene graph for GLM based C++ game engines.
 
-The main goal of this library is to provide upcoming game engine developers with a ready-made transform system.
+The main goal of this library is to provide upcoming game engine developers with a ready-made transform and scene graph system.
 
 ## Why did I start this?
 

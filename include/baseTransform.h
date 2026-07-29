@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
+#include <utility>
 
 class baseTransform
 {
@@ -13,31 +14,37 @@ class baseTransform
 
         bool isStatic;
         int parentIndex = -1;
+        std::vector<int> children;
 
-        glm::mat4 localMatrix;
         glm::mat4 worldMatrix;
 
-        bool localMatrixDirty = true;
-        bool globalMatrixDirty = true;
-
+        bool isDirty = true;
     };
 
 public:
-    explicit baseTransform(const TransformData &m_tdata)
-        : m_Tdata(m_tdata) {
+    explicit baseTransform(TransformData transform_data)
+        : transform_data(std::move(transform_data)) {
     }
 
 private:
+    inline glm::mat4 ComputeLocalToWorldMatrix();
     inline void ComputeWorldMatrix();
-    inline void ComputeLocalMatrix();
 
 protected:
-    TransformData m_Tdata;
+    TransformData transform_data;
 };
+
+inline glm::mat4 baseTransform::ComputeLocalToWorldMatrix()
+{
+    const glm::mat4 localPositionMatrix = glm::translate(glm::mat4(1.0f), transform_data.localPosition);
+    const glm::mat4 localScaleMatrix = glm::scale(glm::mat4(1.0f), transform_data.localScale);
+    const glm::mat4 localRotationMatrix = glm::mat4_cast(transform_data.localRotation);
+
+    return localPositionMatrix * localRotationMatrix * localScaleMatrix;
+}
 
 inline void baseTransform::ComputeWorldMatrix() {
 }
 
-inline void baseTransform::ComputeLocalMatrix() {
-}
+
 
