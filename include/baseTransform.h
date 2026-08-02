@@ -2,48 +2,33 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
-#include <utility>
+#include "baseTransformStruct.h"
 
-class baseTransform
-{
-    struct TransformData {
+namespace open3D {
 
-        glm::vec3 localPosition;
-        glm::quat localRotation;
-        glm::vec3 localScale;
+   class baseTransform {
+   public:
+        baseTransformStruct data;
 
-        bool isStatic;
-        int parentIndex = -1;
-        std::vector<int> children;
+      inline void ComputeObjCoord(float fov, float screenWidth, float screenHeight, float nearPlane, float farPlane);
+      [[nodiscard]] inline glm::mat4 ComputeMVPMatrix() const;
+   };
 
-        glm::mat4 worldMatrix;
+   inline void baseTransform::ComputeObjCoord(float fov, float screenWidth, float screenHeight, float nearPlane, float farPlane){
 
-        bool isDirty = true;
-    };
+       const glm::mat4 localPositionMatrix = glm::translate(glm::mat4(1.0f), data.transform_data.localPosition);
+       const glm::mat4 localScaleMatrix = glm::scale(glm::mat4(1.0f), data.transform_data.localScale);
+       const glm::mat4 localRotationMatrix = glm::mat4_cast(data.transform_data.localRotation);
 
-public:
-    explicit baseTransform(TransformData transform_data)
-        : transform_data(std::move(transform_data)) {
-    }
+       //This is the TRS multiplication, T being the translate or localPositionMatrix,
+       //R being rotate or localRotationMatrix and S being scale or localScaleMatrix
+       data.render_data.modelMatrix = localPositionMatrix * localRotationMatrix * localScaleMatrix;
+       data.render_data.projectionMatrix = glm::perspective(glm::radians(fov), screenWidth/screenHeight, nearPlane, farPlane);
+   }
 
-private:
-    inline glm::mat4 ComputeLocalToWorldMatrix();
-    inline void ComputeWorldMatrix();
-
-protected:
-    TransformData transform_data;
-};
-
-inline glm::mat4 baseTransform::ComputeLocalToWorldMatrix()
-{
-    const glm::mat4 localPositionMatrix = glm::translate(glm::mat4(1.0f), transform_data.localPosition);
-    const glm::mat4 localScaleMatrix = glm::scale(glm::mat4(1.0f), transform_data.localScale);
-    const glm::mat4 localRotationMatrix = glm::mat4_cast(transform_data.localRotation);
-
-    return localPositionMatrix * localRotationMatrix * localScaleMatrix;
-}
-
-inline void baseTransform::ComputeWorldMatrix() {
+   inline glm::mat4 baseTransform::ComputeMVPMatrix() const {
+         return data.render_data.projectionMatrix * data.render_data.viewMatrix * data.render_data.modelMatrix ;
+   }
 }
 
 

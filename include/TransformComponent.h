@@ -11,7 +11,7 @@
 #include <baseTransform.h>
 
 namespace open3D {
-    class Transform : baseTransform {
+    class Transform {
 
         enum SpaceType {
             WorldSpace,
@@ -53,34 +53,6 @@ namespace open3D {
 
         inline static void Destroy();
         inline static void CreateNewTransform();
-
-    private:
-
-        struct TransformData {
-
-            glm::vec3 localPosition;
-            glm::quat localRotation;
-            glm::vec3 localScale;
-
-            bool isStatic;
-            int parentIndex = -1;
-
-            glm::mat3x4 localMatrix;
-            glm::mat3x4 worldMatrix;
-
-            bool localMatrixDirty = true;
-            bool globalMatrixDirty = true;
-
-        };
-
-        std::vector<TransformData> transform_data;
-
-        glm::vec3 position;
-        glm::quat rotation;
-        glm::vec3 scale;
-        glm::vec3 skew;
-        glm::vec4 perspective;
-
     };
 
     inline void Transform::SetParent() {

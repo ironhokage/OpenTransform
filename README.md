@@ -1,4 +1,4 @@
-# OpenDAG
+# OST (Open Scene Transform)
 
 An open source DAG Scene graph for GLM based C++ game engines.
 
